@@ -1,0 +1,17 @@
+package com.krvinay.securityconfigs;
+
+@Configuration
+public class SpringSecurityConfig {
+	
+	@Bean
+	SecurityFilterChain secuirtyFilterChain(HttpSecurity http)throw Exception{
+		
+		http.csrf().disable().authorizeHttpRequest((authorize) -> {
+			
+			authorize.anyRequest.authenticated();
+		}).httpBasic(Customizer.withDefaults());
+		
+		return http.build();		
+	}
+
+}

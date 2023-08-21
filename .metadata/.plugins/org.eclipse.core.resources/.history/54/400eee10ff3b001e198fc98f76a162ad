@@ -1,0 +1,95 @@
+package com.krvinay.serviceimpl;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Service;
+
+import com.krvinay.dto.MovieDto;
+import com.krvinay.entity.MovieEntity;
+import com.krvinay.exceptions.ResourceNotFoundException;
+import com.krvinay.mapper.AutoMapperClass;
+import com.krvinay.mapper.MovieMapper;
+import com.krvinay.repository.MovieRespository;
+import com.krvinay.service.MovieService;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class MovieServiceImpl implements MovieService{
+
+	//used constructor injection rather than setter injection
+	private MovieRespository movieRespository;
+	
+	private ModelMapper modelMapper;
+	
+	@Override
+	public MovieDto add(MovieDto movie) {
+		
+		//Convert MovieDto into JPA MovieEntity 		
+		//MovieEntity entity=MovieMapper.mapToMovieEntity(movie);
+		
+		//Using ModelMapper library
+		//MovieEntity entity=modelMapper.map(movie, MovieEntity.class);
+		
+		//Using ModelStrut library
+		MovieEntity entity=AutoMapperClass.MAPPER.mapToMovieEntity(movie);
+		
+		MovieEntity result=movieRespository.save(entity);		
+		
+	   //Convert JPA MovieEntity into MovieDto		
+	   //MovieDto response=MovieMapper.mapToMovieDto(result);
+		
+	   //Using ModelMapper library
+	   //MovieDto response=modelMapper.map(result, MovieDto.class);
+		
+	   //Using ModelStrut library
+	    MovieDto response=AutoMapperClass.MAPPER.mapToMovieDto(result);
+		return response;
+	}
+
+	@Override
+	public List<MovieDto> gets() {		
+		List<MovieEntity> result=movieRespository.findAll();		
+		//return result.stream().map(modelMapper::map).collect(Collectors.toList());
+		
+		return result.stream().map(entity -> modelMapper.map(entity, MovieDto.class))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public MovieDto get(Long id) {		
+		MovieEntity result=movieRespository.findById(id).orElseThrow(
+				
+					()->new ResourceNotFoundException("Movie","id", id)
+				);		
+		//MovieEntity entity=result.get();
+		//return MovieMapper.mapToMovieDto(entity);
+		//return modelMapper.map(entity,MovieDto.class);
+		return AutoMapperClass.MAPPER.mapToMovieDto(result);
+	}
+
+	@Override
+	public MovieDto update(MovieDto movie) {
+		
+		MovieEntity exits=movieRespository.findById(movie.getId()).get();
+		exits.setName(movie.getName());
+		exits.setArtist(movie.getArtist());
+		exits.setDescription(movie.getDescription());
+		exits.setEmail(movie.getEmail());
+		
+		MovieEntity entity=movieRespository.save(exits);
+		
+		//return MovieMapper.mapToMovieDto(entity);
+		return modelMapper.map(entity,MovieDto.class);
+	}
+	@Override
+	public void delete(Long id) {
+		
+		movieRespository.deleteById(id);
+		
+	}
+}

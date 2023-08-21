@@ -1,0 +1,60 @@
+package com.krvinay.controller;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class BasicController {
+	
+	
+	//VERSIONING
+    /*
+     * Variety of options :-
+     * ->URL -- In this case we will create different urls for the different versions
+     * ->REQUEST PARAMETERS --By using either params or @RequestParam
+     * ->HEADER -- headers=X-API-VERSION=1 OR headers=X-API-VERSION=2
+     * ->MEDIA TYPE -- "Accept"
+     */
+
+   //---- URL --------------------------
+    @GetMapping("/versioning")    
+    public String versioning(){
+        return "heelo";
+    }
+    @GetMapping("/versioning/v2")    
+    public String versioningv2(){
+        return "heelo good morning";
+    }
+    //---- REQUEST PARAMETERS-----------
+    @GetMapping(path="/versioning",params = "version=1")
+    public String versioning_RequestParam_v1(){
+        return "heelo";
+    }
+    @GetMapping(path="/versioning",params = "version=2")
+    public String versioning_RequestParam_v2(){
+        return "heelo";
+    }
+    @GetMapping("/versioning/params")
+    public String versioning_RequestParam_newway(@RequestParam String v1){
+        return "heelo" +v1;
+    }
+    //---- HEADERS -----------
+    @GetMapping(path="/versioning/header", headers="X-API-VERSION=1")
+    public String versioning_Requestheaders_v1(){
+        return "heelo";
+    }
+    @GetMapping(path="/versioning/header", headers="X-API-VERSION=2")
+    public String versioning_Requestheaders_v2(){
+        return "heelo_world";
+    }
+    //---- MEDIA TYPE -----------
+    @GetMapping(path="/versioning/media", produces ="application/vn.company.app-v1+json")
+    public String versioning_Requestmedia_v1(){
+        return "heelo";
+    }
+    @GetMapping(path="/versioning/media", produces ="application/vn.company.app-v2+json")
+    public String versioning_Requestmedia_v2(){
+        return "heelo_world";
+    }
+
+}

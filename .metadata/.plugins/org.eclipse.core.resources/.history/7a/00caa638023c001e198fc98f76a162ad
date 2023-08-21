@@ -1,0 +1,5 @@
+package com.krvinay.exceptions;
+
+public class ErrorDetails {
+
+}

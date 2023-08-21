@@ -1,0 +1,14 @@
+package com.krvinay.service;
+
+import java.util.List;
+
+import com.krvinay.entity.MovieEntity;
+
+public interface MovieService {
+	
+	MovieEntity add(MovieEntity movieEntity);
+	List<MovieEntity> gets();
+	MovieEntity get(Long id);
+	MovieEntity update(MovieEntity movieEntity);
+	void delete(Long id);
+}

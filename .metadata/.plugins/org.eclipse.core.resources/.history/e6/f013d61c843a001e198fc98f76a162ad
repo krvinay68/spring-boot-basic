@@ -1,0 +1,71 @@
+/**
+ * Using Mysql 
+ */
+
+
+package com.krvinay.controller;
+
+import java.util.List;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.krvinay.entity.MovieEntity;
+import com.krvinay.serviceimpl.MovieServiceImpl;
+
+import lombok.AllArgsConstructor;
+
+@RestController
+@RequestMapping("/movie")
+@AllArgsConstructor
+public class MovieController {
+	
+	//used constructor injection rather than setter injection
+	MovieServiceImpl movieService;
+	
+	//localhost:8080/movie/add
+	@PostMapping("/add")
+	public ResponseEntity<MovieEntity> add(@RequestBody MovieEntity movieEntity) {		
+		
+		/*String sampleRequest= 
+				"{\r\n"
+				+ "    \"name\": \"RRR\",\r\n"
+				+ "    \"description\": \"xyz\",\r\n"
+				+ "    \"artist\": \"vinay\",\r\n"
+				+ "    \"email\": \"krvinay68@gmail.com\"\r\n"
+				+ "}";*/
+		
+		MovieEntity movie = movieService.add(movieEntity);
+		return new ResponseEntity<MovieEntity>(movie,HttpStatus.CREATED);		
+	}
+	
+	//localhost:8080/movie/getall
+	@GetMapping("/getall")
+	public ResponseEntity<List<MovieEntity>> getAll() {	
+	
+		List<MovieEntity> movie = movieService.gets();
+		return new ResponseEntity<List<MovieEntity>>(movie,HttpStatus.OK);		
+	}
+	
+	//localhost:8080/movie/get/1
+	@GetMapping("/get/{id}")
+	public ResponseEntity<MovieEntity> getById(@PathVariable Long id) {			
+		MovieEntity movie = movieService.get(id);
+		return new ResponseEntity<MovieEntity>(movie,HttpStatus.OK);		
+	}
+	
+	//localhost:8080/movie/update/1
+	@PutMapping("/update/{id}")
+	public ResponseEntity<MovieEntity> updateById(@PathVariable Long id,@RequestBody MovieEntity movieEntity) {			
+		movieEntity.setId(id);
+		MovieEntity movie = movieService.update(movieEntity);
+		return new ResponseEntity<MovieEntity>(movie,HttpStatus.OK);		
+	}
+}

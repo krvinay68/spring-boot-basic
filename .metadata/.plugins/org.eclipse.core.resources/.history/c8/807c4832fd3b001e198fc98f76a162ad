@@ -1,0 +1,16 @@
+package com.krvinay.exceptions;
+
+public class ResourceNotFoundException extends RuntimeException{
+
+	private static final long serialVersionUID = 1L;
+	
+	private String resourceName;
+	private String fieldName;
+	private Long fieldValue;
+	
+	public ResourceNotFoundException(String resourceName, String fieldName, Long fieldValue) {
+		
+		super(String.format("%s not with %s : '%s'", resourceName,fieldName,fieldValue ));
+	}
+
+}

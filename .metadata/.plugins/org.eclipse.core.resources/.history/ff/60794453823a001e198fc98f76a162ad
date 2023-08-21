@@ -1,0 +1,13 @@
+package com.krvinay.service;
+
+import java.util.List;
+
+import com.krvinay.entity.MovieEntity;
+
+public interface MovieService {
+	
+	MovieEntity addMovie(MovieEntity movieEntity);
+	List<MovieEntity> getMovies();
+	MovieEntity getMovie(Long id);
+
+}

@@ -1,0 +1,9 @@
+package com.krvinay.service;
+
+import com.krvinay.entity.MovieEntity;
+
+public interface MovieService {
+	
+	MovieEntity addMovie(MovieEntity movieEntity)
+
+}

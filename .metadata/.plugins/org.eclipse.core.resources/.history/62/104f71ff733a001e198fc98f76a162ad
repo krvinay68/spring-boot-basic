@@ -1,0 +1,5 @@
+package com.krvinay.service;
+
+public interface MovieService {
+
+}

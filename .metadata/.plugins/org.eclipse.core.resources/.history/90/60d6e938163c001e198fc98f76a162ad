@@ -1,0 +1,72 @@
+package com.krvinay.exceptions;
+
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+	
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ResponseEntity<ErrorDetails> handleResourceNotFoundException(ResourceNotFoundException exception,
+			                                                             WebRequest webRequest){
+		
+		
+		ErrorDetails errorDetails=new ErrorDetails(
+				
+				LocalDateTime.now(),
+				exception.getMessage(),
+				webRequest.getDescription(false),
+				"Data Not Found"
+		);
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(NoDataFoundException.class)
+	public ResponseEntity<ErrorDetails> handleNoDataFoundException(NoDataFoundException exception,
+			                                                             WebRequest webRequest){
+			
+		ErrorDetails errorDetails=new ErrorDetails(
+				
+				LocalDateTime.now(),
+				exception.getMessage(),
+				webRequest.getDescription(false),
+				"No Data Found"
+		);
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(MovieAlreadyExistsException.class)
+	public ResponseEntity<ErrorDetails> handleMovieAlreadyExistsException(MovieAlreadyExistsException exception,
+			                                                             WebRequest webRequest){
+			
+		ErrorDetails errorDetails=new ErrorDetails(
+				
+				LocalDateTime.now(),
+				exception.getMessage(),
+				webRequest.getDescription(false),
+				"Duplicate Movie Name"
+		);
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.BAD_REQUEST);
+	}
+	
+	//Global exception handler
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ErrorDetails> handleGlobalException(Exception exception,
+			                                                             WebRequest webRequest){
+			
+		ErrorDetails errorDetails=new ErrorDetails(
+				
+				LocalDateTime.now(),
+				exception.getMessage(),
+				webRequest.getDescription(false),
+				"Internal server error"
+		);
+		return new ResponseEntity<ErrorDetails>(errorDetails, HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+
+}

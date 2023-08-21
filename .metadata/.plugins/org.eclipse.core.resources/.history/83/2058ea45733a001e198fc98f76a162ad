@@ -1,0 +1,5 @@
+package com.krvinay.repository;
+
+public interface MovieRespository {
+
+}

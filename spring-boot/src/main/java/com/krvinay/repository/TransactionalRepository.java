@@ -1,0 +1,19 @@
+package com.krvinay.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+
+/*
+public interface TransactionalRepository<T, S> extends JpaRepository<T,S>{
+
+	//Way to override trasactional properties for JpaRepository methods
+	
+	@Override
+	@Transactional(propagation=Propagation.NEVER)
+	public <S extends T> S save(S entity);
+	
+}
+
+*/

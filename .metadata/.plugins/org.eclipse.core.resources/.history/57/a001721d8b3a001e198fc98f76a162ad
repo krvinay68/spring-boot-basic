@@ -1,0 +1,10 @@
+spring.application.name=movie
+
+logging.level.root=info
+
+#Data Source Details
+spring.datasource.url=jdbc:mysql://localhost:3306/study
+spring.datasource.username=root
+spring.datasource.password=vinay
+spring.jpa.properties.dialect=org.hibernate.dialect.MySQLDialect
+spring.jpa.hibernate.ddl-auto=create-drop

@@ -1,0 +1,75 @@
+package com.krvinay.serviceimpl;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import org.springframework.stereotype.Service;
+
+import com.krvinay.dto.MovieDto;
+import com.krvinay.entity.MovieEntity;
+import com.krvinay.mapper.MovieMapper;
+import com.krvinay.repository.MovieRespository;
+import com.krvinay.service.MovieService;
+
+import lombok.AllArgsConstructor;
+
+@Service
+@AllArgsConstructor
+public class MovieServiceImpl implements MovieService{
+
+	//used constructor injection rather than setter injection
+	MovieRespository movieRespository;
+	
+	@Override
+	public MovieDto add(MovieDto movie) {
+		
+		/**
+		 * This is mannual conversion impleteation betweent Entity to DTO and VICE-VERSa
+		 */		
+		//Convert MovieDto into JPA MovieEntity 		
+		MovieEntity entity=MovieMapper.mapToMovieEntity(movie);
+		MovieEntity result=movieRespository.save(entity);		
+		
+	   //Convert JPA MovieEntity into MovieDto		
+		MovieDto response=MovieMapper.mapToMovieDto(result);
+		
+		return response;
+	}
+
+	@Override
+	public List<MovieDto> gets() {		
+		
+		List<MovieEntity> result=movieRespository.findAll();		
+		return result.stream().map(MovieMapper::mapToMovieDto).collect(Collectors.toList());
+	}
+
+	@Override
+	public MovieDto get(Long id) {
+		
+		Optional<MovieEntity> result=movieRespository.findById(id);
+		MovieEntity entity=result.get();
+		return MovieMapper.mapToMovieDto(entity);
+	}
+
+	@Override
+	public MovieDto update(MovieDto movie) {
+		
+		MovieEntity exits=movieRespository.findById(movie.getId()).get();
+		exits.setName(movie.getName());
+		exits.setArtist(movie.getArtist());
+		exits.setDescription(movie.getDescription());
+		exits.setEmail(movie.getEmail());
+		
+		MovieEntity entity=movieRespository.save(exits);
+		
+		return MovieMapper.mapToMovieDto(entity);
+	}
+
+	@Override
+	public void delete(Long id) {
+		
+		movieRespository.deleteById(id);
+		
+	}
+}

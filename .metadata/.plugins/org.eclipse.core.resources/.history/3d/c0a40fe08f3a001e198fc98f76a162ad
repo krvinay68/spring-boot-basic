@@ -1,0 +1,21 @@
+package com.krvinay.mapper;
+
+import com.krvinay.dto.MovieDto;
+import com.krvinay.entity.MovieEntity;
+
+public class MovieMapper {
+	
+	//Convert JPA MovieEntity into MovieDto
+	public static MovieDto mapToMovieDto(MovieEntity entity) {
+
+	    MovieDto responseDto=new MovieDto(					
+	    		entity.getId(),
+	    		entity.getName(),
+	    		entity.getDescription(),
+	    		entity.getArtist(),
+	    		entity.getEmail()				
+				);	    
+		return responseDto;
+	}
+
+}
